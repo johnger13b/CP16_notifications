@@ -13,7 +13,8 @@ class CloudMessagingService {
 
   static CloudMessagingService get instance => _instance;
 
-  String get _channelId => /* TODO define el id del canal que se usara */;
+/* TO DO: define el id del canal que se usara */
+  String get _channelId => "flutter_channel";
 
   Future<String?> get deviceToken => _messaging.getToken();
 
@@ -26,12 +27,30 @@ class CloudMessagingService {
     bool provisional = false,
     bool sound = true,
   }) async {
-    /* TODO solicita el permiso para mostrar notificaciones */
-
+    /* TO DO: solicita el permiso para mostrar notificaciones */
+    return await _messaging.requestPermission(
+      alert: alert,
+      announcement: announcement,
+      badge: badge,
+      carPlay: carPlay,
+      criticalAlert: criticalAlert,
+      provisional: provisional,
+      sound: sound,
+    );
   }
 
   Future<void> initChannel() async {
-    /* TODO registra el canal que se usara usando [FlutterNotificationChannel] */
+    /* TO DO: registra el canal que se usara usando [FlutterNotificationChannel] */
+    await FlutterNotificationChannel.registerNotificationChannel(
+      id: _channelId,
+      name: "Channel",
+      description: "notifications PUSH",
+      importance: NotificationImportance.IMPORTANCE_HIGH,
+      allowBubbles: true,
+      enableVibration: true,
+      enableSound: true,
+      showBadge: true,
+    );
   }
 
   void registerHandlers(
@@ -45,14 +64,21 @@ class CloudMessagingService {
 
   Future<void> setNotificationPresentationOptions(
       {bool alert = false, bool badge = false, bool sound = false}) async {
-    /* TODO set presentation options for iOS */
+    /* TO DO: set presentation options for iOS */
+    await _messaging.setForegroundNotificationPresentationOptions(
+      alert: alert,
+      badge: badge,
+      sound: sound,
+    );
   }
 
   Future<void> subscribeToTopic({required String topic}) async {
-    /* TODO suscribe el app a [topic] */
+    /* TO DO: suscribe el app a [topic] */
+    await _messaging.subscribeToTopic(topic);
   }
 
   Future<void> unsubscribeFromTopic({required String topic}) async {
-    /* TODO desuscribe el app a [topic] */
+    /* TO DO: desuscribe el app a [topic] */
+    await _messaging.unsubscribeFromTopic(topic);
   }
 }

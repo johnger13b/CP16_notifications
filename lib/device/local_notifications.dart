@@ -15,12 +15,33 @@ class LocalNotificationManager {
 
   Future<void> initializeLocalNotifications(
       {required String androidFavicon}) async {
-    /* TODO inicializa las notificaciones locales para Android con el id del favicon */
+    /* TO DO: inicializa las notificaciones locales para Android con el id del favicon */
+    _plugin.initialize(
+      InitializationSettings(
+        android: AndroidInitializationSettings(androidFavicon),
+      ),
+    );
   }
 
   Future<void> displayNotification(
       {required Color color, required RemoteMessage message}) async {
     final id = DateTime.now().millisecond ~/ 1000;
-    /* TODO con la configuracion que se uso en el servicio crea los detalles de la notificacion y muestrala */
+    /* TO DO: con la configuracion que se uso en el servicio crea los detalles de la notificacion y muestrala */
+    final notificationDetails = NotificationDetails(
+      android: AndroidNotificationDetails(
+        _channelId,
+        "notifications PUSH",
+        channelDescription: "Channel",
+        importance: Importance.max,
+        priority: Priority.high,
+        color: color,
+      ),
+    );
+    await _plugin.show(
+      id,
+      message.notification?.title ?? '',
+      message.notification?.body ?? '',
+      notificationDetails,
+    );
   }
 }
